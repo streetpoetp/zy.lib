@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="Log_Home" value="log"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%date{yyyy-MM-dd'T'HH:mm:ss.SSSZ} [%thread] %-5level %logger{36} %msg%n%ex{short}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.ignore.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+    </appender>
+
+    <!-- DEBUG级别 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 级别过滤器 -->
+        <Encoding>UTF-8</Encoding>
+        <File>${Log_Home}/debug.log</File>
+        <!-- 根据时间来制定滚动策略 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>
+                ${Log_Home}/debug.%d{yyyy-MM-dd}.%i.log
+            </FileNamePattern>
+            <!-- 多久后自动清楚旧的日志文件,单位:月 -->
+            <MaxHistory>1</MaxHistory>
+            <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- 默认值是 10MB,文档最大值 -->
+                <MaxFileSize>100MB</MaxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <charset>utf-8</charset>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{50} - %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.apache" level="WARN" />
+
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+    </root>
+</configuration>
